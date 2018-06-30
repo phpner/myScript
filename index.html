@@ -123,6 +123,28 @@
         	font-weight: 900;
         	cursor: pointer;
         }
+        .img__box{
+        	position: relative;
+        	width: 100%;
+        	height: 100%;
+        	display: block;
+        	min-height: 750px;
+        }
+        .img__box .img-under{
+        	position: absolute;
+        	z-index: 5;
+        	left: 0;
+        	right: 0;
+        	margin: auto;
+        	opacity: 0;
+
+        }
+        .img__box .img-over{
+        	display: block;
+        	margin: auto;
+        	position: relative;
+        	z-index: 4;
+        }
     </style>
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/owl.theme.default.css">
@@ -131,6 +153,11 @@
 </head>
 <body>
 
+
+<div class="img__box">
+	<img src="img/mob-br1.png" class="img-under" alt="">
+	<img src="img/mob-br2.png" class="img-over" alt="">
+</div>
 
 <div class="ul__click">
 	<ul>
@@ -212,6 +239,18 @@
 
     <script>
         $(document).ready(function(){
+
+        	/*Эффект с картинкой*/
+        	var timer = 2000
+        	imgGo();
+        	function imgGo(){
+        		$(".img-under").animate({opacity : 1},timer,function(){
+        			imgGo();
+        			$(this).animate({opacity : 0},timer);
+        			console.log(this);
+        		});
+        	}
+        	/*setInterval(imgGo, 3000, )*/
 
         	/*Делегирование*/
         	$(".ul__click").on('click',function(e){
