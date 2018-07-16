@@ -69,11 +69,23 @@
           height: auto;
         }
 
-        .slide-progress {
+        .slide-progress,.slick-progress {
           width: 0;
           max-width: 100%;
           height: 4px;
           background: #7fc242;
+        }
+        .slicder-slick-pro{
+          position: relative;
+          width: 50%;
+          margin: auto;
+        }
+        .slick-progress{
+          position: absolute;
+          top: 0;
+          left:0;
+          height: 20px;
+          z-index: 999;
         }
         .box{
           position: relative;
@@ -145,9 +157,24 @@
         	position: relative;
         	z-index: 4;
         }
+        
+        .slider-for{
+          width: 50%;
+          margin: auto;
+          border: 1px solid;
+          height: 150px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .slick-track{
+          height: 350px;
+        }
     </style>
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/owl.theme.default.css">
+    <link rel="stylesheet" href="css/slick-theme.css">
+    <link rel="stylesheet" href="css/slick.css">
     <meta charset="UTF-8">
     <title>Document</title>
 </head>
@@ -184,8 +211,25 @@
 		</li>
 	</ul>
 </div>
-    
+<div class="slicder-slick-pro">
+ <div class="slick-progress"></div>
+<div class="slider-nav slick-slider"> 
+        <img src="http://placehold.it/350x350" alt="slide">
+        <img src="http://placehold.it/350x350" alt="slide">
+        <img src="http://placehold.it/350x350" alt="slide">
+        <img src="http://placehold.it/350x350" alt="slide">
+        <img src="http://placehold.it/350x350" alt="slide">
 
+</div> 
+</div>  
+
+<div class="slider-for">
+     <div><h3>1</h3></div>
+    <div><h3>2</h3></div>
+    <div><h3>3</h3></div>
+    <div><h3>4</h3></div>
+    <div><h3>5</h3></div>   
+</div>
 
  <div class="box"> 
     <div class="viewport">
@@ -236,18 +280,59 @@
     <script src="jquery.maskedinput.js"></script>
     <script src="owl.carousel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="js/slick.min.js"></script>
 
     <script>
         $(document).ready(function(){
 
+          /*Slick карусель */
+ 
+
+    // On  slide change
+          $('.slider-nav').on('init', function(event, slick, currentSlide, nextSlide){    
+          console.log("init")  
+                  // apply keyframe animation
+                  $(".slick-progress").css({
+                    width : '100%' ,
+                    transition: "width 3000ms"
+                  });
+           }).on('afterChange', function(event, slick, currentSlide, nextSlide){      
+                  // apply keyframe animation
+                  $(".slick-progress").css({
+                    width : '100%' ,
+                    transition: "width 3000ms"
+                  });
+           }).on('beforeChange', function(event, slick, currentSlide, nextSlide){
+
+                $(".slick-progress").css({
+                  width: "0%",
+                  transition: "width 0s"
+                });
+         });
+
+         $('.slider-for').slick({
+             slidesToShow: 1,
+             autoplay: true,
+             slidesToScroll: 1,
+             arrows: false,
+             fade: true,
+             asNavFor: '.slider-nav'
+         });
+         $('.slider-nav').slick({
+             slidesToShow: 1, // 3,
+             slidesToScroll: 1,
+             asNavFor: '.slider-for',
+             dots: true,
+             centerMode: false,
+             focusOnSelect: true
+         });
         	/*Эффект с картинкой*/
         	var timer = 2000
         	imgGo();
         	function imgGo(){
         		$(".img-under").animate({opacity : 1},timer,function(){
         			imgGo();
-        			$(this).animate({opacity : 0},timer);
-        			console.log(this);
+        			$(this).animate({opacity : 0},timer);        			
         		});
         	}
         	/*setInterval(imgGo, 3000, )*/
@@ -270,8 +355,6 @@
           var delW = $(".box").width();
 
           var total = (widthBox * countBox) - delW;
-
-          console.log(delW);
 
          $( "#slider" ).slider({
           min: 0,
